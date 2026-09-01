@@ -1,0 +1,17 @@
+[DOCUMENT_ID: SEBI-REG30-HDFCBANK-2025Q3-03]
+COMPANY: HDFC Bank Limited (NSE: HDFCBANK)
+FILING_TYPE: SEBI (LODR) Regulations, 2015 - Post-Merger Operational Disclosure
+DATE: 2025-10-25
+SECTION: Net Interest Margins (NIM), LDR Normalization & Asset Quality
+
+1. Financial & Profitability Highlights:
+Net Interest Income (NII) grew to INR 30,110 Crores (+10.2% YoY). Profit After Tax (PAT) reached INR 16,820 Crores. Net Interest Margin (NIM) stabilized at 3.46% on total assets (3.65% on interest-earning assets), marking the completion of post-merger compression phase.
+
+2. Loan-to-Deposit Ratio (LDR) & Deposit Growth:
+Total deposits grew by 15.4% YoY to INR 25,20,000 Crores, outpacing gross advances growth of 8.6% (INR 25,60,000 Crores). The Loan-to-Deposit Ratio (LDR) moderated significantly from 110% post-merger to 101.5%, progressing steadily toward historical comfort band of 85-90%.
+
+3. Asset Quality & Provisioning:
+Gross Non-Performing Assets (GNPA) stood at 1.36% (improved 2 bps QoQ). Net NPA contained at 0.38%. Provision Coverage Ratio (PCR) maintained at 74.8%. Capital Adequacy Ratio (CAR) under Basel III stood at 19.8% against regulatory minimum of 11.7%.
+
+4. Digital & Retail Network:
+Added 240 branches during the quarter, bringing total branch count to 9,092. Digital loan originations contributed 82% of unsecured retail volumes.

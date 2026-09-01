@@ -1,0 +1,17 @@
+[DOCUMENT_ID: SEBI-REG30-ZOMATO-2025Q3-06]
+COMPANY: Zomato Limited / Eternal (NSE: ZOMATO)
+FILING_TYPE: SEBI (LODR) Regulations, 2015 - Financial Statement & Blinkit Expansion
+DATE: 2025-11-01
+SECTION: Quick Commerce Expansion & Consolidated Adjusted EBITDA
+
+1. Consolidated Financial Performance:
+Gross Order Value (GOV) across B2C businesses grew 55% YoY to INR 17,600 Crores. Consolidated revenue grew 68% YoY to INR 4,799 Crores. Adjusted EBITDA improved to positive INR 226 Crores vs INR -48 Crores in prior year.
+
+2. Quick Commerce (Blinkit) Hypergrowth:
+Blinkit GOV grew 122% YoY. Dark store count reached 791 stores across 30 cities with an average delivery turnaround time of 11.4 minutes. Store-level contribution margin turned positive at 4.2% of GOV.
+
+3. Food Delivery Core Segment:
+Food delivery GOV rose 21% YoY. Adjusted EBITDA margin as a % of GOV expanded to 3.5%. Platform fee hike to INR 10/order successfully absorbed without order volume attrition.
+
+4. Liquidity & Cash Balance:
+Cash balance remains strong at INR 10,800 Crores. The board approved INR 8,500 Crore QIP equity raise to fortify the balance sheet for quick commerce capex and dark store warehouse network buildout.

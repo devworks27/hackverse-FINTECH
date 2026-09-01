@@ -1,0 +1,17 @@
+[DOCUMENT_ID: SEBI-REG30-TCS-2025Q3-04]
+COMPANY: Tata Consultancy Services Limited (NSE: TCS)
+FILING_TYPE: SEBI (LODR) Regulations, 2015 - Financial Results & Order Book
+DATE: 2025-10-12
+SECTION: TCV Deal Wins, AI Engagements & Operating Margins
+
+1. Financial Overview:
+Consolidated revenue rose to INR 64,250 Crores (+8.1% YoY in CC terms). Operating margin expanded by 50 bps to 26.0%, supported by productivity enhancements and digital automation.
+
+2. Order Book & Total Contract Value (TCV):
+Quarterly order book TCV achieved an all-time high of $10.2 Billion across BFSI, Retail, and Manufacturing. Key mega-deal win includes a $1.2B 7-year cloud and AI modernization contract with a premier UK insurance consortium.
+
+3. AI & Generative Technologies Deployment:
+Deployed Enterprise AI solutions across 140+ Fortune 500 clients. Over 350,000 employees trained on foundational and advanced AI/ML capabilities.
+
+4. Dividend & Shareholder Capital Return:
+The Board declared an interim dividend of INR 10 per equity share plus a special dividend of INR 28 per equity share (Total payout: INR 13,750 Crores). Cash and investments buffer stands at INR 48,900 Crores with zero long-term debt.

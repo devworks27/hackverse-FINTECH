@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinIntel | Autonomous Multi-Agent Financial Intelligence Platform</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            fintech: {
+              bg: '#07090e',
+              card: '#111827',
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+              rose: '#f43f5e',
+              amber: '#f59e0b',
+              indigo: '#6366f1'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons & Chart.js -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="bg-[#07090e] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
+
+  <!-- TOP TICKER TAPE -->
+  <div class="ticker-tape-container py-1.5 px-4 z-40">
+    <div class="ticker-tape" id="tickerTape">
+      <!-- Dynamically filled with streaming ticks -->
+    </div>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-xl sticky top-0 z-30 px-6 py-3.5">
+    <div class="max-w-[1720px] mx-auto flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
+          <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-200 to-indigo-300">FinIntel AI</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-950/80 text-indigo-400 border border-indigo-800/50">PS-01 SYSTEM</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Autonomous Multi-Agent Intelligence for Retail Investors</p>
+        </div>
+      </div>
+
+      <!-- Live Market Status & Telemetry -->
+      <div class="flex items-center gap-6">
+        <div id="wsStatusBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800">
+          <span class="pulse-dot"></span>
+          <span class="text-xs text-emerald-400 font-semibold tracking-wider">NSE TICK STREAM ACTIVE</span>
+        </div>
+
+        <div class="hidden md:flex items-center gap-4 text-xs">
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] text-slate-500 font-semibold">SLA PIPELINE LATENCY</span>
+            <span id="telemetryLatency" class="mono font-bold text-cyan-400 text-sm">-- ms</span>
+          </div>
+          <div class="h-6 w-px bg-slate-800"></div>
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] text-slate-500 font-semibold">SEBI RAG GROUNDING</span>
+            <span id="telemetryGrounding" class="mono font-bold text-emerald-400 text-sm">-- %</span>
+          </div>
+          <div class="h-6 w-px bg-slate-800"></div>
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] text-slate-500 font-semibold">1-DAY VaR (95%)</span>
+            <span id="telemetryVaR" class="mono font-bold text-amber-400 text-sm">-- %</span>
+          </div>
+        </div>
+
+        <div class="px-3.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs mono text-slate-400 font-medium" id="istClock">
+          --:--:-- IST
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- SUB-HEADER: Ticker Pills & Persona Switcher Deck -->
+  <div class="bg-slate-900/40 border-b border-slate-800/60 px-6 py-3">
+    <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Quick Ticker Switcher -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1">
+          <i data-lucide="trending-up" class="w-3.5 h-3.5 text-cyan-400"></i> NSE Equities:
+        </span>
+        <div id="stockPills" class="flex items-center gap-1.5 flex-wrap">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+      <!-- User Persona Deck -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1">
+          <i data-lucide="user-check" class="w-3.5 h-3.5 text-indigo-400"></i> Investor Profile:
+        </span>
+        <div id="personaPills" class="flex items-center gap-2">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAULT INJECTION & ALERT BANNER (If Active) -->
+  <div id="faultAlertBanner" class="hidden bg-rose-950/80 border-b border-rose-800 text-rose-200 px-6 py-2 text-xs">
+    <!-- Populated dynamically when fault or conflict occurs -->
+  </div>
+
+  <!-- MAIN DASHBOARD CONTENT -->
+  <main class="flex-1 px-6 py-6 max-w-[1720px] w-full mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- LEFT COLUMN: Synthesis, Decision Intelligence, Reasoning Waterfall (5 Cols) -->
+      <section class="lg:col-span-5 space-y-6">
+
+        <!-- ACTIVE STOCK HERO CARD -->
+        <div class="glass-panel p-6 border-l-4 border-cyan-500 relative overflow-hidden">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 id="activeStockName" class="text-xl font-extrabold text-white">Loading...</h2>
+                <span id="activeStockSymbol" class="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 font-mono text-xs font-semibold">NSE: RELIANCE</span>
+              </div>
+              <p id="activeStockSector" class="text-xs text-slate-400 mt-0.5">Energy & Conglomerate</p>
+            </div>
+            <div class="text-right">
+              <div id="activeStockPrice" class="mono text-2xl font-black text-white">₹0.00</div>
+              <div id="activeStockChange" class="mono text-sm font-bold text-emerald-400">+0.00%</div>
+            </div>
+          </div>
+
+          <!-- PRIMARY ACTION BADGE & CONFIDENCE -->
+          <div class="mt-6 pt-5 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold block mb-1.5">Synthesized Multi-Agent Stance</span>
+              <div id="heroActionBadge" class="badge-strong-buy px-4 py-1.5 rounded-xl font-extrabold text-sm tracking-wide inline-block">
+                ACTION: BUY ACCUMULATE
+              </div>
+            </div>
+            <div class="flex flex-col items-start sm:items-end">
+              <span class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold block mb-1">Confidence Rating</span>
+              <div class="flex items-center gap-3">
+                <div class="w-28 h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                  <div id="heroConfidenceBar" class="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-500" style="width: 85%;"></div>
+                </div>
+                <span id="heroConfidenceText" class="mono text-emerald-400 font-bold text-sm">85.0%</span>
+              </div>
+              <span id="heroRiskScore" class="text-[10px] text-slate-400 mt-1">3.2/10 Risk Score</span>
+            </div>
+          </div>
+
+          <!-- EXECUTIVE SUMMARY & PERSONALIZED RATIONALE -->
+          <div class="mt-5 space-y-3">
+            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+              <div class="text-[11px] text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Executive Thesis
+              </div>
+              <p id="executiveSummaryText" class="text-xs text-slate-200 leading-relaxed font-medium">
+                Evaluating multi-agent inputs...
+              </p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-indigo-950/20 border border-indigo-900/40">
+              <div class="text-[11px] text-indigo-400 font-bold uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                <i data-lucide="user" class="w-3.5 h-3.5"></i> Tailored for Selected Profile
+              </div>
+              <p id="personalizedRationaleText" class="text-xs text-slate-300 leading-relaxed">
+                Loading tailored reasoning...
+              </p>
+            </div>
+          </div>
+
+          <!-- TRADE EXECUTION PLAN -->
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+              <span class="text-[10px] text-slate-400 font-semibold block">RECOMMENDED ENTRY</span>
+              <span id="planEntryRange" class="mono text-xs font-bold text-cyan-300 mt-0.5 block">₹0.00 - ₹0.00</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+              <span class="text-[10px] text-slate-400 font-semibold block">STOP-LOSS / INVALIDATION</span>
+              <span id="planStopLoss" class="mono text-xs font-bold text-rose-400 mt-0.5 block">₹0.00</span>
+            </div>
+          </div>
+
+          <!-- BEHAVIORAL WARNINGS & SAFEGUARDS -->
+          <div id="behavioralAlertsContainer" class="mt-3 space-y-2 hidden">
+            <!-- Injected dynamically -->
+          </div>
+
+          <!-- MANDATORY RETAIL GUARDRAILS -->
+          <div class="mt-4 pt-3 border-t border-slate-800/80">
+            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block mb-2">Safety Guardrails & Risk Limits</span>
+            <ul id="guardrailsList" class="space-y-1.5">
+              <!-- Injected dynamically -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- REASONING WATERFALL AUDIT TRAIL -->
+        <div class="glass-panel p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <i data-lucide="git-merge" class="w-4 h-4 text-indigo-400"></i>
+              <h3 class="font-bold text-sm text-white">Multi-Agent Reasoning Waterfall</h3>
+            </div>
+            <span class="text-[11px] text-slate-500 font-mono">Trace Latency < 50ms</span>
+          </div>
+
+          <div id="reasoningWaterfall" class="space-y-1">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- CENTER & RIGHT COLUMN: Candlestick Chart, 3-Agent Desks, Screener, RAG Search (7 Cols) -->
+      <section class="lg:col-span-7 space-y-6">
+
+        <!-- INTERACTIVE CHART PANEL -->
+        <div class="glass-panel p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <i data-lucide="candlestick-chart" class="w-4 h-4 text-cyan-400"></i>
+              <h3 class="font-bold text-sm text-white">Technical Price Action & Volatility Bands</h3>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="flex items-center gap-1 text-cyan-400 font-semibold"><span class="w-2 h-2 rounded-full bg-cyan-400"></span> Close</span>
+              <span class="flex items-center gap-1 text-indigo-400 font-semibold"><span class="w-2 h-2 rounded-full bg-indigo-400"></span> 20 EMA</span>
+              <span class="flex items-center gap-1 text-amber-400 font-semibold"><span class="w-2 h-2 rounded-full bg-amber-400"></span> 50 EMA</span>
+            </div>
+          </div>
+
+          <div class="h-[280px] w-full">
+            <canvas id="marketChart"></canvas>
+          </div>
+        </div>
+
+        <!-- 3 PARALLEL SPECIALIZED AGENT DESKS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Desk 1: Technical -->
+          <div class="glass-panel p-4 border-l-2 border-cyan-400 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="font-bold text-cyan-300 flex items-center gap-1">
+                  <i data-lucide="line-chart" class="w-3.5 h-3.5"></i> Technical Desk
+                </span>
+                <span id="techAgentLatency" class="mono text-[10px] text-slate-500">0.0ms</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span id="techAgentStance" class="text-xs font-extrabold text-emerald-400">BULLISH</span>
+                <span id="techAgentScore" class="mono text-xs text-slate-400">Score: +0.65</span>
+              </div>
+              <ul id="techAgentFindings" class="space-y-1"></ul>
+            </div>
+          </div>
+
+          <!-- Desk 2: Fundamental RAG -->
+          <div class="glass-panel p-4 border-l-2 border-emerald-400 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="font-bold text-emerald-300 flex items-center gap-1">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Fundamental RAG
+                </span>
+                <span id="fundAgentLatency" class="mono text-[10px] text-slate-500">0.0ms</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span id="fundAgentStance" class="text-xs font-extrabold text-emerald-400">BULLISH</span>
+                <span id="fundAgentScore" class="mono text-xs text-slate-400">Score: +0.70</span>
+              </div>
+              <ul id="fundAgentFindings" class="space-y-1"></ul>
+            </div>
+          </div>
+
+          <!-- Desk 3: Sentiment & Microstructure -->
+          <div class="glass-panel p-4 border-l-2 border-amber-400 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="font-bold text-amber-300 flex items-center gap-1">
+                  <i data-lucide="radio" class="w-3.5 h-3.5"></i> Sentiment Desk
+                </span>
+                <span id="sentAgentLatency" class="mono text-[10px] text-slate-500">0.0ms</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span id="sentAgentStance" class="text-xs font-extrabold text-emerald-400">BULLISH</span>
+                <span id="sentAgentScore" class="mono text-xs text-slate-400">Score: +0.55</span>
+              </div>
+              <ul id="sentAgentFindings" class="space-y-1"></ul>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 3D SIGNAL SCREENER MATRIX -->
+        <div class="glass-panel p-5 overflow-x-auto">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="layout-grid" class="w-4 h-4 text-cyan-400"></i>
+              <h3 class="font-bold text-sm text-white">Multi-Dimensional Market Signal Screener</h3>
+            </div>
+            <span class="text-[11px] text-slate-500">Auto-Refreshed across 3 Quantitative Dimensions</span>
+          </div>
+
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-slate-400 border-b border-slate-800 text-[11px] uppercase tracking-wider">
+                <th class="py-2.5 px-4 font-semibold">Symbol</th>
+                <th class="py-2.5 px-4 font-semibold">CMP</th>
+                <th class="py-2.5 px-4 font-semibold">24h Chg</th>
+                <th class="py-2.5 px-4 font-semibold">RSI-14</th>
+                <th class="py-2.5 px-4 font-semibold">Vol Spike</th>
+                <th class="py-2.5 px-4 font-semibold">Options PCR</th>
+                <th class="py-2.5 px-4 font-semibold">Signal</th>
+                <th class="py-2.5 px-4 font-semibold">Confidence</th>
+              </tr>
+            </thead>
+            <tbody id="screenerTableBody">
+              <!-- Injected by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- GROUNDED SEBI FILING RAG SEARCH & FAULT INJECTION CONTROLS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- RAG Search Panel -->
+          <div class="glass-panel p-5">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="search" class="w-4 h-4 text-indigo-400"></i>
+              <h3 class="font-bold text-sm text-white">SEBI Regulatory RAG Search</h3>
+            </div>
+            <div class="flex gap-2 mb-3">
+              <input type="text" id="ragSearchInput" placeholder="e.g. debt covenants capex revenue" class="glass-input text-xs flex-1">
+              <button id="ragSearchBtn" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-colors">
+                Search
+              </button>
+            </div>
+            <div id="ragResultsContainer" class="max-h-48 overflow-y-auto pr-1">
+              <div class="text-xs text-slate-500 text-center p-3">Enter keywords to query verified SEBI filings.</div>
+            </div>
+          </div>
+
+          <!-- Fault Injection & Edge-Case Simulator Panel -->
+          <div class="glass-panel p-5 border-l-2 border-rose-500">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i>
+              <h3 class="font-bold text-sm text-white">Fault Injection & Conflict Simulator</h3>
+            </div>
+            <p class="text-[11px] text-slate-400 mb-3">Simulate degraded states and cross-agent signal conflicts for hackathon evaluation:</p>
+            
+            <div class="space-y-2 text-xs">
+              <label class="flex items-center gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/60 hover:bg-slate-900 border border-slate-800">
+                <input type="checkbox" id="simFeedFail" class="rounded accent-rose-500">
+                <span class="text-slate-300">💥 <b>Feed Outage:</b> Disconnect real-time NSE feed</span>
+              </label>
+
+              <label class="flex items-center gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/60 hover:bg-slate-900 border border-slate-800">
+                <input type="checkbox" id="simMissingRAG" class="rounded accent-rose-500">
+                <span class="text-slate-300">📑 <b>Missing RAG:</b> Simulate corrupt/missing SEBI filing</span>
+              </label>
+
+              <label class="flex items-center gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/60 hover:bg-slate-900 border border-slate-800">
+                <input type="checkbox" id="simConflict" class="rounded accent-rose-500">
+                <span class="text-slate-300">⚡ <b>Signal Conflict:</b> Inject opposing Tech & Funda signals</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- LOADING SPINNER MODAL -->
+  <div id="loadingIndicator" class="fixed inset-0 modal-overlay flex items-center justify-center z-50 hidden">
+    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl flex flex-col items-center gap-4">
+      <div class="w-10 h-10 border-4 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin"></div>
+      <div class="text-xs text-cyan-300 font-semibold tracking-wider">DISPATCHING PARALLEL REASONING AGENTS...</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-slate-950/80 py-4 px-6 mt-8 text-center text-xs text-slate-500">
+    <p>IEEE Robotics & Automation Society · VIT Chennai | Hackverse 2026 Sprint 1 Rapid Vibe Coding</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

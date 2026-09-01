@@ -1,0 +1,17 @@
+[DOCUMENT_ID: SEBI-REG30-INFY-2025Q3-05]
+COMPANY: Infosys Limited (NSE: INFY)
+FILING_TYPE: SEBI (LODR) Regulations, 2015 - Guidance & Earnings Release
+DATE: 2025-10-17
+SECTION: Revenue Guidance Revision & Topaz AI Pipeline
+
+1. Financial Performance:
+Quarterly revenue grew to INR 41,200 Crores (+5.8% YoY). Operating margin stood at 21.2%. Free cash flow generation reached $840 Million.
+
+2. FY26 Constant Currency Guidance:
+Revised FY26 annual revenue growth guidance upward to 4.75% - 5.5% (from earlier 3.75% - 4.5%), citing strong recovery in North American financial services client discretionary spending.
+
+3. Infosys Topaz & Cobalt Engagements:
+Over 220 generative AI projects in active pipeline. Average deal size for AI-first transformational contracts grew by 35% QoQ.
+
+4. Headcount & Attrition:
+Voluntary trailing 12-month attrition declined to 12.9%. Added 3,500 net freshers in global delivery centers.

@@ -1,0 +1,20 @@
+[DOCUMENT_ID: SEBI-REG30-RIL-2025Q3-01]
+COMPANY: Reliance Industries Limited (NSE: RELIANCE)
+FILING_TYPE: SEBI (LODR) Regulations, 2015 - Regulation 30 Material Disclosure
+DATE: 2025-10-18
+SECTION: Operational Performance & Capex Allocation
+
+1. Financial Highlights:
+Consolidated quarterly revenue recorded at INR 2,35,400 Crores, demonstrating a 9.2% YoY expansion. Consolidated EBITDA stood at INR 44,600 Crores with an EBITDA margin of 18.9%. 
+
+2. Segment Performance & Telecom (Jio Platforms):
+Telecom ARPU (Average Revenue Per User) rose to INR 195.3/month, supported by 5G network monetization and subscriber base crossing 490 million. 5G capex cycle has passed peak intensity, resulting in a 22% quarter-on-quarter decline in telecom capital expenditure.
+
+3. Retail Segment:
+Reliance Retail expanded its physical footprint to 18,900 stores with footfalls exceeding 280 million. Footwear and grocery verticals recorded 18% YoY growth. Margin profile improved by 45 bps due to supply chain automation.
+
+4. Oil-to-Chemicals (O2C) & New Energy Capex:
+O2C gross refining margins (GRM) remained resilient at $10.4/bbl despite global crude volatility. The board confirmed INR 75,000 Crore allocation towards the Dhirubhai Ambani Green Energy Giga Complex in Jamnagar, with phase-1 solar PV giga-factory scheduled for commercial commissioning by Q1 FY26.
+
+5. Balance Sheet & Debt Covenant Analysis:
+Consolidated net debt remains contained at INR 1,12,000 Crores with a Net Debt to EBITDA ratio of 0.63x, well below the conservative ceiling of 1.5x. Liquidity buffer of cash and marketable securities stands at INR 1,88,000 Crores. No default or regulatory non-compliance noted.
